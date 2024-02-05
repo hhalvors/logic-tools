@@ -7,15 +7,29 @@
 import Data.Hashable (hash)
 
 -- Define data types for propositional logic
-data PropLogic = Atom String
-               | Not PropLogic
-               | And PropLogic PropLogic
-               | Or PropLogic PropLogic
-               | Imply PropLogic PropLogic
-               deriving (Show)
+data Prop = Atom String
+               | Not Prop
+               | And Prop Prop
+               | Or Prop Prop
+               | Imply Prop Prop
+               deriving (Show, Eq)
 
--- the function below does NOT do it. We don't care which atoms occur,
--- but we do care about which atoms match each other
+-- the function below does NOT do it. We may not care which atoms
+-- occur, but we do care about which atoms match each other. e.g. P&P
+-- is not the same structure as A&B. Basically looking for the
+-- equivalence class of a Prop under permutation of atomics
+
+-- each Prop has a unique geometric structure. In position (0,0) is
+-- the prop itself. Then subformulas of depth 1 can occur at position
+-- (-1,-1), (0,-1), or (1,-1). Etc.
+
+-- I need a better encoding so that there can be no ambiguity about
+-- where things came from.
+
+-- Finally, there is an equivalence relation on
+-- the leaves.
+
+
 
 decompose :: Prop -> [(Int, Prop)]
 decompose prop = decompose' prop 0
